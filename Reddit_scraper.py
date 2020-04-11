@@ -4,9 +4,9 @@ import requests
 
 
 
+#------------------------------------------------------------------------------------------------------
 
-# Setup a view list the size of how many videos are in database this is for the view_log function
-# the first run of the script will record data
+
 subreddit_lst = []
 
 with open('database.csv', mode='r', newline='') as database_csv:
@@ -43,13 +43,8 @@ def reddit_log():
                 csv_file.writerow([time.strftime('%H:%M', time.localtime()), time.time(), usrs_online, sub_count, pct ])
                 subreddit_lst[index] = usrs_online
                     
-                    
-
-
-                
+       
 #------------------------------------------------------------------------------------------------------
-
-
 
 
 #Reddit API interface to sub nuber of active users
@@ -68,6 +63,7 @@ def get_active_users(subreddit):
     return content["data"]["accounts_active"]
 
 #------------------------------------------------------------------------------------------------------
+
 #Reddit API interface to sub count
 
 headers = {
@@ -84,23 +80,25 @@ def get_sub_count(subreddit):
     return content["data"]["subscribers"]
 #------------------------------------------------------------------------------------------------------
 
-
-
-reddit_log()
-
-i = 1
-while i > 0:
+def run():
+    wait = 300
     cycle_start = time.time()
     reddit_log()
     cycle_end = time.time()
     cycle_time = cycle_end - cycle_start
     print('Cycle Time(s):', cycle_time)
     print('cycle complete', time.strftime('%H:%M', time.localtime()), '\n')
-    print('Waiting 15mins', '\n')
-    time.sleep(450) #30mins wait before  refresh
+    print('Waiting', wait/60, 'mins', '\n')
+    time.sleep(wait) #5 mins wait before  refresh
 
+#------------------------------------------------------------------------------------------------------
 
-
+while True:
+    try:
+        run()
+    except:
+        print("Error")
+        time.sleep(15)
 
 
 
