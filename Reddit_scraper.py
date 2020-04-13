@@ -2,6 +2,10 @@ import time
 import csv
 import requests
 
+'''
+Make sure the database file is closed and restart the script
+
+'''
 
 
 #------------------------------------------------------------------------------------------------------
@@ -23,7 +27,7 @@ def reddit_log():
         database = csv.reader(database_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in database:
             index = int(row[0])
-            data_path = './data/' + row[0] + '_stats' 
+            data_path = './data/' + row[0] + '_stats.csv' 
             sub_red = row[1]
             sub_red = sub_red.strip()
             #print('Subreddit',sub_red)
@@ -40,7 +44,7 @@ def reddit_log():
             with open(data_path, mode='a', newline='') as video_csv: #a for append
                 csv_file = csv.writer(video_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 print('Writing CSV...', '\n')
-                csv_file.writerow([time.strftime('%H:%M', time.localtime()), time.time(), usrs_online, sub_count, pct ])
+                csv_file.writerow([time.time(), time.strftime('%Y-%m-%d %H:%M', time.localtime()) , usrs_online, sub_count, pct ])
                 subreddit_lst[index] = usrs_online
                     
        
@@ -89,16 +93,21 @@ def run():
     print('Cycle Time(s):', cycle_time)
     print('cycle complete', time.strftime('%H:%M', time.localtime()), '\n')
     print('Waiting', wait/60, 'mins', '\n')
-    time.sleep(wait) #5 mins wait before  refresh
+    time.sleep(wait) 
 
 #------------------------------------------------------------------------------------------------------
 
-while True:
-    try:
-        run()
-    except:
-        print("Error")
-        time.sleep(15)
+def error_handling_run():
+    
+
+    while True:
+        try:
+            run()
+        except:
+            print("Error")
+            time.sleep(15)
 
 
+
+error_handling_run()
 
