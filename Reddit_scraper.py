@@ -107,7 +107,10 @@ def error_handling_run():
             print("Error")
             time.sleep(15)
 
-
-
+#------------------------------------------------------------------------------------------------------
+            
+print("Wait until first run completes before leaving")
+run()
+print("You can go now")
 error_handling_run()
 
