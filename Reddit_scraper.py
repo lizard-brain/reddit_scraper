@@ -40,12 +40,20 @@ def reddit_log():
             active_change = usrs_online - subreddit_lst[index]
             print('User Change:',active_change)
 
+            if sub_count == -1:
+                with open('./data/error_log.csv', mode='a', newline='') as error_csv: #a for append
+                    error_file = csv.writer(error_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    print('Writing CSV...', '\n')
+                    error_file.writerow([time.strftime('%Y-%m-%d %H:%M', time.localtime()) , sub_red, 'reddit api return error' ])
 
-            with open(data_path, mode='a', newline='') as video_csv: #a for append
-                csv_file = csv.writer(video_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                print('Writing CSV...', '\n')
-                csv_file.writerow([time.time(), time.strftime('%Y-%m-%d %H:%M', time.localtime()) , usrs_online, sub_count, pct ])
-                subreddit_lst[index] = usrs_online
+            else:
+            
+            
+                with open(data_path, mode='a', newline='') as video_csv: #a for append
+                    csv_file = csv.writer(video_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    print('Writing CSV...', '\n')
+                    csv_file.writerow([time.time(), time.strftime('%Y-%m-%d %H:%M', time.localtime()) , usrs_online, sub_count, pct ])
+                    subreddit_lst[index] = usrs_online
                     
        
 #------------------------------------------------------------------------------------------------------
@@ -85,7 +93,6 @@ def get_sub_count(subreddit):
 #------------------------------------------------------------------------------------------------------
 
 def run():
-    wait = 300
     cycle_start = time.time()
     reddit_log()
     cycle_end = time.time()
@@ -104,13 +111,17 @@ def error_handling_run():
         try:
             run()
         except:
+            with open('./data/error_log.csv', mode='a', newline='') as error_csv: #a for append
+                error_file = csv.writer(error_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                print('Writing CSV...', '\n')
+                error_file.writerow([time.strftime('%Y-%m-%d %H:%M', time.localtime()) , 'global run error' ])
             print("Error")
             time.sleep(15)
 
 #------------------------------------------------------------------------------------------------------
             
 print("Wait until first run completes before leaving")
-run()
+
 print("You can go now")
 error_handling_run()
 

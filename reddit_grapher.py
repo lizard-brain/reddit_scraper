@@ -66,9 +66,9 @@ def plot(file):
     percent_active(file)
 
 
-plot('politics.csv')
-plot('drugs.csv')
 plot('Aus.csv')
+plot('porn.csv')
+
 
 
 
